@@ -1,0 +1,34 @@
+group_vars/k8s_cluster/k8s-cluster.yml:
+  kube_api_anonymous_auth: false
+  kube_network_plugin: cilium
+  remove_anonymous_access: true
+group_vars/k8s_cluster/addons.yml:
+  ingress_nginx_enabled: false
+  metallb_enabled: true
+  metallb_speaker_enabled: '"{{ metallb_enabled }}"'
+  metallb_namespace: kube-system
+  metallb_protocol: "layer2"
+  metallb_config:
+    speaker:
+      nodeselector:
+        kubernetes.io/os: "linux"
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
+    controller:
+      nodeselector:
+        kubernetes.io/os: "linux"
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
+    address_pools:
+      primary:
+        ip_range:
+          - 10.0.100.0/22
+        auto_assign: true
+    layer2:
+      - primary

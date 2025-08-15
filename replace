@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+
+BOLD=$(tput bold)
+NC=$(tput sgr0)
+# Detect if terminal supports color for pretty printing when logging.
+if command -v tput >/dev/null && [[ $(tput colors) -ge 256 ]]; then
+  # Vivid pastel tones
+  WHITE=$(tput setaf 255)   # White
+  PURPLE=$(tput setaf 183)  # Lavender
+  RED=$(tput setaf 203)     # Soft red
+  GRAY=$(tput setaf 250)    # Light gray
+  GREEN=$(tput setaf 120)   # Mint green
+  MAGENTA=$(tput setaf 201) # Bright magenta
+  YELLOW=$(tput setaf 229)  # Pale yellow
+  BOLD=$(tput bold)
+  # Muted/dark variants
+  GRAY_DIM=$(tput setaf 240) # Dim gray
+  BLUE_DIM=$(tput setaf 25)  # Navy blue
+else
+  # Fallback for basic 8-color terminals
+  PURPLE=$(tput setaf 5)
+  RED=$(tput setaf 1)
+  GRAY=$(tput setaf 8)
+  GREEN=$(tput setaf 2)
+  MAGENTA=$(tput setaf 5)
+  YELLOW=$(tput setaf 3)
+  GRAY_DIM=$(tput setaf 8)
+  BLUE_DIM=$(tput setaf 4)
+fi
+
+# replace_values processes a YAML replacements file and updates target files with new values.
+#
+# Arguments:
+# - replacements_file: Path to the YAML file containing file paths and key-value pairs to replace
+#
+# The function expects a YAML structure where:
+# - Top-level keys are file paths relative to kubespray/inventory/sample/
+# - Nested keys are configuration keys to replace
+# - Values are the new values to set
+replace_values() {
+  local replacements_file="$1"
+  local target_dir="$2"
+
+  if [ ! -f "$replacements_file" ]; then
+    echo "${RED}Error: Replacements file '$replacements_file' not found${NC}"
+    return 1
+  fi
+
+  # Use yq to parse the YAML and extract file paths.
+  local files
+  files=$(yq eval 'keys | .[]' "$replacements_file")
+
+  # Create temporary files to track counters across subshells
+  local changes_made_file
+  local changes_skipped_file
+  changes_made_file=$(mktemp)
+  changes_skipped_file=$(mktemp)
+  echo "0" >"$changes_made_file"
+  echo "0" >"$changes_skipped_file"
+
+  # Use printf to handle the output properly across shells
+  printf '%s\n' "$files" | while IFS= read -r file_path; do
+    if [ -z "$file_path" ]; then
+      continue
+    fi
+
+    local target_file="$target_dir/inventory/sample/$file_path"
+
+    if [ ! -f "$target_file" ]; then
+      echo "${YELLOW}Warning: Target file '$target_file' not found, skipping...${NC}"
+      continue
+    fi
+
+    printf "%sProcessing %s%s%s:\n" "${GRAY_DIM}" "${BOLD}${WHITE}" "${target_file}" "${NC}"
+
+    # Get all keys for this file
+    local keys
+    keys=$(yq eval ".[\"$file_path\"] | keys | .[]" "$replacements_file")
+
+    printf '%s\n' "$keys" | while IFS= read -r key; do
+      if [ -z "$key" ]; then
+        continue
+      fi
+
+      # Get the value for this key, handling complex YAML structures.
+      local value
+      value=$(yq eval ".[\"$file_path\"][\"$key\"]" "$replacements_file")
+
+      # Handle different value types.
+      if [ "$value" = "null" ]; then
+        printf "%s  Skipping null value for key: %s%s%s\n" "${GRAY}" "${GRAY_DIM}" "${key}" "${NC}"
+        local current_skipped
+        current_skipped=$(cat "$changes_skipped_file")
+        echo $((current_skipped + 1)) >"$changes_skipped_file"
+        continue
+      elif yq eval ".[\"$file_path\"][\"$key\"] | type" "$replacements_file" | grep -q "!!map\|!!seq"; then
+        # Handle complex structures (maps/arrays) by replacing the entire block.
+        local current_value
+        current_value=$(yq eval ".[\"$key\"]" "$target_file" 2>/dev/null || echo "not found")
+
+        # Compare current value with new value for complex structures
+        local new_value_formatted
+        new_value_formatted=$(yq eval ".[\"$file_path\"][\"$key\"]" "$replacements_file")
+
+        if [ "$current_value" = "$new_value_formatted" ]; then
+          printf "%s  Skipping unchanged complex structure for key: %s%s%s\n" "${GRAY}" "${GRAY_DIM}" "${key}" "${NC}"
+          local current_skipped
+          current_skipped=$(cat "$changes_skipped_file")
+          echo $((current_skipped + 1)) >"$changes_skipped_file"
+          continue
+        fi
+
+        echo "${PURPLE}  Replacing complex structure for key: ${MAGENTA}$key${NC}"
+        echo "${GRAY}    Current value: ${GRAY_DIM}$current_value${NC}"
+        echo "${GRAY}    New value: ${GREEN}$new_value_formatted${NC}"
+
+        # Create a temporary file with the new value.
+        local temp_file
+        temp_file=$(mktemp)
+        printf '%s:\n' "$key" >"$temp_file"
+        yq eval ".[\"$file_path\"][\"$key\"]" "$replacements_file" | sed 's/^/  /' >>"$temp_file"
+
+        # Use yq to merge the changes.
+        yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$target_file" "$temp_file" >"${target_file}.tmp"
+        mv "${target_file}.tmp" "$target_file"
+        rm "$temp_file"
+        local current_made
+        current_made=$(cat "$changes_made_file")
+        echo $((current_made + 1)) >"$changes_made_file"
+      else
+        # Handle simple key-value pairs.
+        local current_value
+        current_value=$(grep "^$key:" "$target_file" | sed "s/^$key: *//" 2>/dev/null || echo "not found")
+
+        # Compare current value with new value
+        if [ "$current_value" = "$value" ]; then
+          printf "%s  Skipping unchanged value for key: %s%s%s (already set to: %s%s%s)\n" "${GRAY}" "${GRAY_DIM}" "${key}" "${NC}" "${GRAY_DIM}" "${value}" "${NC}"
+          local current_skipped
+          current_skipped=$(cat "$changes_skipped_file")
+          echo $((current_skipped + 1)) >"$changes_skipped_file"
+          continue
+        fi
+
+        printf "%s   Replacing %s%s%s:\n" "${BLUE_DIM}" "${YELLOW}${BOLD}" "${key}" "${NC}"
+        printf "%s     - Current value: %s%s%s\n" "${GRAY}" "${GRAY}" "${current_value}" "${NC}"
+        printf "%s     + New value:     %s%s%s\n" "${GREEN}" "${GREEN}" "${BOLD}${value}" "${NC}"
+
+        # Check if key exists and update it, or add it if it doesn't exist.
+        if grep -q "^$key:" "$target_file"; then
+          # Use portable sed syntax that works across different systems.
+          case "$(uname -s)" in
+          Darwin*)
+            sed -i '' "s|^$key:.*|$key: $value|g" "$target_file"
+            ;;
+          *)
+            sed -i "s|^$key:.*|$key: $value|g" "$target_file"
+            ;;
+          esac
+        else
+          printf '%s: %s\n' "$key" "$value" >>"$target_file"
+        fi
+        local current_made
+        current_made=$(cat "$changes_made_file")
+        echo $((current_made + 1)) >"$changes_made_file"
+      fi
+    done
+  done
+
+  # Read final counter values from temporary files.
+  changes_made=$(cat "$changes_made_file")
+  changes_skipped=$(cat "$changes_skipped_file")
+
+  # Clean up temporary files.
+  rm "$changes_made_file" "$changes_skipped_file"
+
+  printf "%sChanges made:    %s%s%s\n" "${GREEN}" "${BOLD}" "${changes_made}" "${NC}"
+  printf "%sChanges skipped: %s%s%s\n" "${YELLOW}" "${BOLD}" "${changes_skipped}" "${NC}"
+  printf "%sTotal processed: %s%s%s\n" "${GRAY}" "${BOLD}" "$((changes_made + changes_skipped))" "${NC}"
+
+}
+
+# Check if yq is available.
+if ! command -v yq >/dev/null 2>&1; then
+  echo "${RED}Error: yq is required but not installed. Please install yq to use this script.${NC}"
+  exit 1
+fi
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+  printf "%sError: Missing arguments!%s\n" "${RED}" "${NC}"
+  printf "%sUsage: %s$0%s %s%s%s %s%s%s%s\n" "${GRAY}" "${GRAY_DIM}" "${NC}" "${YELLOW}" "<replacements_file>" "${NC}" "${YELLOW}" "<target_dir>" "${NC}"
+  exit 1
+fi
+
+replace_values "$1" "$2"
