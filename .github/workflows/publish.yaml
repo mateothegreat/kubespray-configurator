@@ -37,7 +37,6 @@ jobs:
           git add .
           git commit -am "release: update changelog and bumping version"
           git push origin HEAD:main
-          npm version ${{ steps.tag.outputs.new_tag }}
       - name: create github release
         uses: softprops/action-gh-release@v2
         with:
