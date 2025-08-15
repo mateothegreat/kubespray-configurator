@@ -19,11 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # Enhanced body template with better organization and visual appeal
 body = """
-{% if version %}\
-    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mateothegreat/kubespray-configurator/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
-{% else %}\
-    ## [Unreleased](https://github.com/mateothegreat/kubespray-configurator/compare/HEAD...main)
-{% endif %}\
+## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mateothegreat/kubespray-configurator/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
 
 {% if version %}
 ### 📊 Release Summary
@@ -33,28 +29,24 @@ body = """
 {% endif %}
 
 {% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | striptags | trim | upper_first }}
+  ### {{ group | striptags | trim | upper_first }}
 
-{% for commit in commits %}
-- {% if commit.scope %}**{{ commit.scope }}**: {% endif %}\
-{% if commit.breaking %}⚠️ **BREAKING**: {% endif %}\
-{{ commit.message | upper_first | trim }}\
-{% if commit.author %} \
-by [@{{ commit.remote.username }}](https://github.com/{{ commit.remote.username }}){% endif %} \
-([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/mateothegreat/kubespray-configurator/commit/{{ commit.id }}))
-{% endfor %}
+  {% for commit in commits %}
+    - {% if commit.scope %}**{{ commit.scope }}**: {% endif %}\
+    {% if commit.breaking %}⚠️ **BREAKING**: {% endif %}{{ commit.message | upper_first | trim }}\
+    {% if commit.author %} by [@{{ commit.remote.username }}](https://github.com/{{ commit.remote.username }}){% endif %} \
+    ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/mateothegreat/kubespray-configurator/commit/{{ commit.id }}))
+  {% endfor %}
 {% endfor %}
 
 {% if github.contributors | length != 0 %}
-### 👥 Contributors
+  ### 👥 Contributors
 
-Thanks ❤️‍🔥 to the following people who contributed to this release:
+  Thanks ❤️‍🔥 to the following people who contributed to this release:
 
-{% for contributor in github.contributors %}
-{% if contributor.username %}
-- [@{{ contributor.username }}](https://github.com/{{ contributor.username }})
-{%- endif %}
-{%- endfor %}
+  {% for contributor in github.contributors %}
+    {% if contributor.username %} - [@{{ contributor.username }}](https://github.com/{{ contributor.username }}){%- endif %}
+  {%- endfor %}
 {% endif %}
 """
 
