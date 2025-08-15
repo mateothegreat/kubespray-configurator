@@ -17,6 +17,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🔧 Maintenance
 
+- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`1b3f7fb`](https://github.com/mateothegreat/kubespray-configurator/commit/1b3f7fb39b66313352073b474e5d87ea91e6aab2))
+
+### 📋 Other Changes
+
+- Update changelog and bumping version by [@mateothegreat[bot]](https://github.com/mateothegreat[bot]) ([`8a9d152`](https://github.com/mateothegreat/kubespray-configurator/commit/8a9d15275dbf2bbe186e3730aca4f585810417e8))
+
+### 👥 Contributors
+
+Thanks ❤️‍🔥 to the following people who contributed to this release:
+
+- [@mateothegreat](https://github.com/mateothegreat)
+
+## [0.0.2](https://github.com/mateothegreat/kubespray-configurator/releases/tag/0.0.2) - 2025-08-15
+
+### 📊 Release Summary
+- **Version**: `0.0.2`
+- **Released**: August 15, 2025
+- **Total Changes**: 2 commits
+
+### 🔧 Maintenance
+
 - Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`6a48c1b`](https://github.com/mateothegreat/kubespray-configurator/commit/6a48c1bacb7a83eec2418a70a35ea46b87eaf3f6))
 
 ### 📋 Other Changes
