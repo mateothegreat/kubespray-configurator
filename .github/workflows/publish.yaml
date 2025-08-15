@@ -33,11 +33,12 @@ jobs:
           tag_prefix: ""
       - name: commit
         run: |
-          git config --global user.name "mateothegreat[bot]"
-          git config --global user.email "mateothegreat[bot]@users.noreply.github.com"
+          git config --global user.name "mateothegreat"
+          git config --global user.email "matthew@matthewdavis.io"
           git add .
           git commit -am "release: update changelog and bumping version"
           git push origin HEAD:main
+      - run: echo ${{ steps.git-cliff.outputs.content }}
       - name: create github release
         uses: softprops/action-gh-release@v2
         with:
