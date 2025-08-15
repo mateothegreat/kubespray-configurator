@@ -21,6 +21,7 @@ jobs:
         id: git-cliff
         with:
           config: .github/cliff.toml
+          args: --strip header
         env:
           OUTPUT: docs/changelog.md
           GITHUB_REPO: ${{ github.repository }}

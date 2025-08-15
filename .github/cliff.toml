@@ -40,7 +40,7 @@ body = """
 {% if commit.breaking %}⚠️ **BREAKING**: {% endif %}\
 {{ commit.message | upper_first | trim }}\
 {% if commit.author %} \
-by [@{{ commit.author.name }}](https://github.com/{{ commit.author.name }}){% endif %} \
+by [@{{ commit.remote.username }}](https://github.com/{{ commit.remote.username }}){% endif %} \
 ([`{{ commit.id | truncate(length=7, end="") }}`](https://github.com/mateothegreat/kubespray-configurator/commit/{{ commit.id }}))
 {% endfor %}
 {% endfor %}
