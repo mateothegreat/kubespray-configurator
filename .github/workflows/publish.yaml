@@ -27,7 +27,7 @@ jobs:
         id: git-cliff
         with:
           config: .github/cliff.toml
-          args: --strip header --tag ${{ steps.tag.outputs.new_tag }}
+          args: --strip header --latest --tag ${{ steps.tag.outputs.new_tag }}
         env:
           OUTPUT: docs/changelog.md
           GITHUB_REPO: ${{ github.repository }}
