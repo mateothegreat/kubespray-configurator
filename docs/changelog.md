@@ -13,10 +13,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [0.0.0](https://github.com/mateothegreat/kubespray-configurator/releases/tag/0.0.0) - 2025-08-15
+## [Unreleased](https://github.com/mateothegreat/kubespray-configurator/compare/HEAD...main)
+
+### 🔧 Maintenance
+
+- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`6a48c1b`](https://github.com/mateothegreat/kubespray-configurator/commit/6a48c1bacb7a83eec2418a70a35ea46b87eaf3f6))
+
+### 📋 Other Changes
+
+- Update changelog and bumping version by [@mateothegreat[bot]](https://github.com/mateothegreat[bot]) ([`f5cda04`](https://github.com/mateothegreat/kubespray-configurator/commit/f5cda04971ee6520c54e4bdb501086ac157ed3d3))
+
+### 👥 Contributors
+
+Thanks ❤️‍🔥 to the following people who contributed to this release:
+
+- [@mateothegreat](https://github.com/mateothegreat)
+
+## [0.0.1](https://github.com/mateothegreat/kubespray-configurator/releases/tag/0.0.1) - 2025-08-15
 
 ### 📊 Release Summary
-- **Version**: `0.0.0`
+- **Version**: `0.0.1`
 - **Released**: August 15, 2025
 - **Total Changes**: 3 commits
 
