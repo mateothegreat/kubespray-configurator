@@ -1,27 +1,33 @@
-<div align="center">
-<h1>📋 Changelog</h1>
-<p><strong>@mateothegreat/kubespray-configurator</strong></p>
-<p>A tool to help you maintain your settings for kubespray</p>
-<p>
-<a href="https://github.com/mateothegreat/kubespray-configurator">GitHub</a> •
-</p>
-</div>
-
----
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased](https://github.com/mateothegreat/kubespray-configurator/compare/HEAD...main)
 
 ### 🔧 Maintenance
 
-- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`1b3f7fb`](https://github.com/mateothegreat/kubespray-configurator/commit/1b3f7fb39b66313352073b474e5d87ea91e6aab2))
+- Github actions for releasing by [@mateothegreat](https://github.com/mateothegreat) ([`3157321`](https://github.com/mateothegreat/kubespray-configurator/commit/315732111ddc56671beaff5cac3a4b0bb8b32cc5))
 
 ### 📋 Other Changes
 
-- Update changelog and bumping version by [@mateothegreat[bot]](https://github.com/mateothegreat[bot]) ([`8a9d152`](https://github.com/mateothegreat/kubespray-configurator/commit/8a9d15275dbf2bbe186e3730aca4f585810417e8))
+- Update changelog and bumping version by [@](https://github.com/) ([`92a1fd9`](https://github.com/mateothegreat/kubespray-configurator/commit/92a1fd9c1231146c7f3bd08ad69e9dbccc09ecd2))
+
+### 👥 Contributors
+
+Thanks ❤️‍🔥 to the following people who contributed to this release:
+
+- [@mateothegreat](https://github.com/mateothegreat)
+
+## [0.0.3](https://github.com/mateothegreat/kubespray-configurator/releases/tag/0.0.3) - 2025-08-15
+
+### 📊 Release Summary
+- **Version**: `0.0.3`
+- **Released**: August 15, 2025
+- **Total Changes**: 2 commits
+
+### 🔧 Maintenance
+
+- Github actions for releasing by [@mateothegreat](https://github.com/mateothegreat) ([`1b3f7fb`](https://github.com/mateothegreat/kubespray-configurator/commit/1b3f7fb39b66313352073b474e5d87ea91e6aab2))
+
+### 📋 Other Changes
+
+- Update changelog and bumping version by [@](https://github.com/) ([`8a9d152`](https://github.com/mateothegreat/kubespray-configurator/commit/8a9d15275dbf2bbe186e3730aca4f585810417e8))
 
 ### 👥 Contributors
 
@@ -38,11 +44,11 @@ Thanks ❤️‍🔥 to the following people who contributed to this release:
 
 ### 🔧 Maintenance
 
-- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`6a48c1b`](https://github.com/mateothegreat/kubespray-configurator/commit/6a48c1bacb7a83eec2418a70a35ea46b87eaf3f6))
+- Github actions for releasing by [@mateothegreat](https://github.com/mateothegreat) ([`6a48c1b`](https://github.com/mateothegreat/kubespray-configurator/commit/6a48c1bacb7a83eec2418a70a35ea46b87eaf3f6))
 
 ### 📋 Other Changes
 
-- Update changelog and bumping version by [@mateothegreat[bot]](https://github.com/mateothegreat[bot]) ([`f5cda04`](https://github.com/mateothegreat/kubespray-configurator/commit/f5cda04971ee6520c54e4bdb501086ac157ed3d3))
+- Update changelog and bumping version by [@](https://github.com/) ([`f5cda04`](https://github.com/mateothegreat/kubespray-configurator/commit/f5cda04971ee6520c54e4bdb501086ac157ed3d3))
 
 ### 👥 Contributors
 
@@ -59,13 +65,13 @@ Thanks ❤️‍🔥 to the following people who contributed to this release:
 
 ### 🔧 Maintenance
 
-- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`0ccdfce`](https://github.com/mateothegreat/kubespray-configurator/commit/0ccdfce2b12ffc93464ef3fa1007805bd936137c))
+- Github actions for releasing by [@mateothegreat](https://github.com/mateothegreat) ([`0ccdfce`](https://github.com/mateothegreat/kubespray-configurator/commit/0ccdfce2b12ffc93464ef3fa1007805bd936137c))
 
-- Github actions for releasing by [@Matthew Davis](https://github.com/Matthew Davis) ([`cf385d7`](https://github.com/mateothegreat/kubespray-configurator/commit/cf385d75fb18e64244f97bb7d4e37a27834a0c71))
+- Github actions for releasing by [@mateothegreat](https://github.com/mateothegreat) ([`cf385d7`](https://github.com/mateothegreat/kubespray-configurator/commit/cf385d75fb18e64244f97bb7d4e37a27834a0c71))
 
 ### 📋 Other Changes
 
-- Initial commit by [@Matthew Davis](https://github.com/Matthew Davis) ([`ea703aa`](https://github.com/mateothegreat/kubespray-configurator/commit/ea703aa78e5903d233bcefc9d2309f5fb6c7ad52))
+- Initial commit by [@mateothegreat](https://github.com/mateothegreat) ([`ea703aa`](https://github.com/mateothegreat/kubespray-configurator/commit/ea703aa78e5903d233bcefc9d2309f5fb6c7ad52))
 
 ### 👥 Contributors
 
