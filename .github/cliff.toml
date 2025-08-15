@@ -19,7 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 # Enhanced body template with better organization and visual appeal
 body = """
-## [{{ version }}](https://github.com/mateothegreat/kubespray-configurator/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mateothegreat/kubespray-configurator/releases/tag/{{ version }}) - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [Unreleased](https://github.com/mateothegreat/kubespray-configurator/compare/HEAD...main)
+{% endif %}\
 
 {% if version %}
 ### 📊 Release Summary
